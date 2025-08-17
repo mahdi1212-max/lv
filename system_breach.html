@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM BREACH</title>
+    <style>
+        body {
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            line-height: 1.4;
+        }
+
+        .screen {
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 255, 0, 0.02) 50%
+            );
+            background-size: 100% 4px;
+            animation: scanline 10s linear infinite;
+        }
+
+        .glitch {
+            animation: glitch 0.5s infinite;
+        }
+
+        .progress {
+            width: 100%;
+            height: 20px;
+            background: #001100;
+            border: 1px solid #0f0;
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #0f0;
+            transition: width 0.5s;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .message {
+            border-left: 2px solid #0f0;
+            padding-left: 10px;
+            margin: 15px 0;
+        }
+
+        .cyber-button {
+            background: transparent;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-button:hover {
+            background: #0f0;
+            color: #000;
+        }
+
+        .cyber-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: #0f0;
+            animation: slide 2s infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+
+        @keyframes glitch {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(2px); }
+            50% { transform: translateX(-2px); }
+            75% { transform: translateX(1px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes slide {
+            to { left: 100%; }
+        }
+
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .terminal {
+            background: rgba(0, 20, 0, 0.9);
+            padding: 20px;
+            border: 1px solid #0f0;
+            margin: 20px auto;
+            max-width: 800px;
+            position: relative;
+        }
+
+        .blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="screen">
+        <div class="scanline"></div>
+        <canvas id="matrix-canvas"></canvas>
+        
+        <div class="terminal" id="main-terminal">
+            <h2 class="glitch">[INITIATING CONNECTION SEQUENCE]</h2>
+            <div id="content">
+                <!-- Content will be added by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Matrix rain effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789';
+        const fontSize = 16;
+        const columns = canvas.width/fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            for(let i = 0; i < drops.length; i++) {
+                const char = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 50);
+
+        // Main sequence
+        const messages = [
+            {
+                type: 'text',
+                content: '[SCANNING TARGET PROFILE...]',
+                delay: 2000
+            },
+            {
+                type: 'text',
+                content: '[ANALYZING SYSTEM...]',
+                delay: 1500
+            },
+            {
+                type: 'progress',
+                delay: 3000
+            },
+            {
+                type: 'message',
+                content: `
+                    SYSTEM REPORT:
+                    ═════════════
+                    → Target Analysis Complete
+                    → Found: Beautiful Person
+                    → Status: Makes My Heart Race
+                    → Intelligence: Over 9000
+                    → Charm: Maximum
+                `,
+                delay: 3000
+            },
+            {
+                type: 'text',
+                content: '[PREPARING DATA TRANSMISSION...]',
+                delay: 2000
+            },
+            {
+                type: 'message',
+                content: `
+                    DIRECT MESSAGE:
+                    ══════════════
+                    Let's be real - I think you're amazing.
+                    Your code reviews make my day better.
+                    Want to debug life together?
+                    
+                    SUGGESTED ACTION:
+                    ═══════════════
+                    Coffee.exe? 🍵
+                    Location: Your favorite café
+                    Time: Whenever you're free
+                    Purpose: Get to know the awesome person behind the code
+                `,
+                delay: 3000
+            },
+            {
+                type: 'text',
+                content: '[AWAITING RESPONSE...]',
+                delay: 1500
+            },
+            {
+                type: 'buttons',
+                content: `
+                    <button class="cyber-button" onclick="handleResponse(true)">ACCEPT INVITATION</button>
+                    <button class="cyber-button" onclick="handleResponse(false)">DECLINE</button>
+                `,
+                delay: 0
+            }
+        ];
+
+        let currentIndex = 0;
+
+        function addToTerminal(html) {
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            document.getElementById('content').appendChild(div);
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function showProgress() {
+            const progress = document.createElement('div');
+            progress.className = 'progress';
+            progress.innerHTML = '<div class="progress-bar"></div>';
+            document.getElementById('content').appendChild(progress);
+            
+            setTimeout(() => {
+                progress.querySelector('.progress-bar').style.width = '100%';
+            }, 100);
+        }
+
+        function playSequence() {
+            if (currentIndex >= messages.length) return;
+
+            const message = messages[currentIndex];
+            
+            switch(message.type) {
+                case 'text':
+                    addToTerminal(`<p class="glitch">${message.content}</p>`);
+                    break;
+                case 'progress':
+                    showProgress();
+                    break;
+                case 'message':
+                    addToTerminal(`<div class="message">${message.content}</div>`);
+                    break;
+                case 'buttons':
+                    addToTerminal(message.content);
+                    break;
+            }
+
+            currentIndex++;
+            if (message.delay > 0) {
+                setTimeout(playSequence, message.delay);
+            }
+        }
+
+        function handleResponse(accepted) {
+            const responseDiv = document.createElement('div');
+            responseDiv.className = 'message';
+            
+            if (accepted) {
+                responseDiv.innerHTML = `
+                    [CONNECTION ESTABLISHED]
+                    ═════════════════════
+                    → Status: Success
+                    → Happiness: 100%
+                    → Next steps: Loading...
+                    → Coffee protocol: Initializing...
+                `;
+            } else {
+                responseDiv.innerHTML = `
+                    [CONNECTION FAILED]
+                    ══════════════
+                    → Status: Retry
+                    → System: Still operational
+                    → Hope.exe: Still running
+                    → Future attempts: Possible
+                `;
+            }
+            
+            document.getElementById('content').appendChild(responseDiv);
+        }
+
+        // Start the sequence when page loads
+        window.onload = playSequence;
+    </script>
+</body>
+</html>
